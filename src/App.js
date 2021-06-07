@@ -14,16 +14,14 @@ class App extends React.Component {
         }
       };
     }
-getLists = () => {
-  fetch("http://localhost:5000/posts")
-    .then((res) => res.json())
-      .then((result) => {
-        this.setState({
-          alldata: result, 
-          loading: false
-        })
-      })
-      .catch(console.log);
+  getLists = () => {
+  this.setState({loading:true})
+  fetch("http://localhost:8000/api/books", {method: "GET"})
+            .then((res) => res.json())
+            .then((data) => {
+                this.setState({alldata: data, loading: false})
+            })
+            .catch((e) => console.error(e))
     }
 handleChange = (event) => {
     let title = this.state.singledata.title;
@@ -40,7 +38,7 @@ this.setState({
       });
     }
 createList = () => {
-    fetch("http://localhost:5000/posts", {
+    fetch("http://localhost:8000/api/book", {
         method: "POST", 
           headers: {
             "Content-Type": "application/json"
@@ -80,7 +78,7 @@ getList = (event, id) => {
     }
 
     updateList = (event, id) => {
-      fetch("http://localhost:5000/posts/" + id, {
+      fetch("http://localhost:8000/api/book", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
@@ -100,7 +98,7 @@ getList = (event, id) => {
     }
 
     deleteList = (event, id) => {
-      fetch("http://localhost:5000/posts/" + id, {
+      fetch("http://localhost:8000/api/book" + id, {
         method: "DELETE"
       })
       .then(res => res.json())
@@ -141,13 +139,14 @@ getLists = () => {
   return (
     <div className="container">
       <span className="title-bar">
-        <button
+        {/* <button
           type="button"
           className="btn btn-primary"
           onClick={this.getLists}
         >
           Get Lists
-        </button>
+        </button> */}
+        
       </span>
       {listTable}
     </div>
